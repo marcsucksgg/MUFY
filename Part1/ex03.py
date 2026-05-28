@@ -1,4 +1,4 @@
-string1 = 'MaRviN THE bOt'
+string1 = 'MarVin THE BoT'
 string_lower = string1.lower()
 string_upper = string1.upper()
 string_nospace = string1.replace(" ","")
