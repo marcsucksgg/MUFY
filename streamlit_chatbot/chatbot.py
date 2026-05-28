@@ -6,10 +6,6 @@ import numpy as np
 import datetime
 
 from datetime import date
-from google import genai
-
-client = genai.Client(api_key="YOUR_GEMINI_API_KEY")
-
 
 st.title("Study Buddy")
 
@@ -270,60 +266,7 @@ def pomodoro_timer():
 
 
 
-def ai_bot():
 
-    st.sidebar.header(
-        "🤖 Gemini Study Assistant"
-    )
-
-    # Create memory
-    if "messages" not in st.session_state:
-
-        st.session_state.messages = []
-
-    # Chat input
-    prompt = st.sidebar.chat_input(
-        "Ask Gemini anything..."
-    )
-
-    # When user sends message
-    if prompt:
-
-        # Save user message
-        st.session_state.messages.append({
-            "role": "user",
-            "content": prompt
-        })
-
-        try:
-
-            # Generate Gemini response
-            response = client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt
-            )
-
-            ai_reply = response.text
-
-        except Exception as e:
-
-            ai_reply = f"Error: {e}"
-
-        # Save AI response
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": ai_reply
-        })
-
-    # Display chat history
-    for message in st.session_state.messages:
-
-        with st.sidebar.chat_message(
-            message["role"]
-        ):
-
-            st.write(
-                message["content"])
 
 def daily_streak():
 
@@ -460,7 +403,7 @@ def main():
 
     study_reminders()
 
-    ai_bot()
+    
 
 
 
@@ -492,49 +435,4 @@ def main():
     motivation_quote()
 main()
 
-GOOGLE_API_KEY = "AIzaSyCgUhGT97XfSB1SPIEMQm3KMBYJsLzp3U4"
-client = genai.Client(api_key=GOOGLE_API_KEY)
-
-def initialize_session_state():
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
-
-def get_gemini_response(prompt):
-    response = client.models.generate_content(
-        model='gemini-2.5-flash',
-        contents=prompt
-    )
-    return response.text
-
-def main():
-    st.title("Gemini AI Chatbot")
-    
-    initialize_session_state()
-
-    # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
-
-    # Chat input
-    if prompt := st.chat_input("Chat with Gemini"):
-        # Display user message in chat message container
-        with st.chat_message("user"):
-            st.write(prompt)
-        
-        # Add user message to chat history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        
-        # Get Gemini response
-        response = get_gemini_response(prompt)
-        
-        # Display assistant response in chat message container
-        with st.chat_message("assistant"):
-            st.write(response)
-        
-        # Add assistant response to chat history
-        st.session_state.messages.append({"role": "assistant", "content": response})
-
-if __name__ == "__main__":
-    main()
       
